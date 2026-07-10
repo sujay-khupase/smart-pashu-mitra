@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% block title %}Smart Pashu Mitra — Home{% endblock %}
+{% block content %}
+
+<section class="hero">
+  <div>
+    <div class="hero-eyebrow">Rural Internship Programme · 2026</div>
+    <h1>A digital decision-support platform for rural livestock farmers.</h1>
+    <p class="lede">
+      Smart Pashu Mitra helps farmers and the local veterinary office manage
+      animal records, track vaccination schedules, get basic health guidance,
+      and stay informed about government livestock schemes — all from one
+      simple website.
+    </p>
+    <div class="hero-actions">
+      <a href="{{ url_for('dashboard') }}" class="btn btn-primary">Open Dashboard</a>
+      <a href="{{ url_for('add_farmer') }}" class="btn btn-outline">Register a Farmer</a>
+    </div>
+  </div>
+  <div class="hero-stamp">
+    <span class="hero-stamp-text">Animal Husbandry<br>Department<br>Jalgaon Jamod</span>
+  </div>
+</section>
+
+<section>
+  <div class="section-label">What this platform does</div>
+  <h2>Six modules, one register</h2>
+  <div class="feature-grid">
+    <div class="feature-card">
+      <span class="icon">📋</span>
+      <h3>Farmer Registration</h3>
+      <p>Keep a simple digital record of every farmer's name, village, and contact details.</p>
+    </div>
+    <div class="feature-card">
+      <span class="icon">🐄</span>
+      <h3>Animal Registration</h3>
+      <p>Link each animal to its owner with breed, age, and weight on record.</p>
+    </div>
+    <div class="feature-card">
+      <span class="icon">💉</span>
+      <h3>Vaccination Tracker</h3>
+      <p>See upcoming and overdue vaccinations at a glance, sorted by due date.</p>
+    </div>
+    <div class="feature-card">
+      <span class="icon">🩺</span>
+      <h3>Health Assistant</h3>
+      <p>Enter a symptom and get basic guidance on likely causes and next steps.</p>
+    </div>
+    <div class="feature-card">
+      <span class="icon">🏛️</span>
+      <h3>Government Schemes</h3>
+      <p>Browse livestock and dairy schemes farmers may be eligible for.</p>
+    </div>
+    <div class="feature-card">
+      <span class="icon">📊</span>
+      <h3>Dashboard</h3>
+      <p>A single view of total farmers, animals, and pending vaccinations.</p>
+    </div>
+  </div>
+</section>
+
+{% endblock %}

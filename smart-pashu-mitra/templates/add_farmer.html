@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block title %}Register Farmer — Smart Pashu Mitra{% endblock %}
+{% block content %}
+
+<div class="page-header">
+  <div>
+    <div class="section-label">Register</div>
+    <h1>Register a Farmer</h1>
+    <p>Add a new farmer to the register.</p>
+  </div>
+</div>
+
+<form method="POST" class="form-card">
+  <div class="field">
+    <label for="name">Full Name</label>
+    <input type="text" id="name" name="name" placeholder="e.g. Ramesh Patil" required>
+  </div>
+  <div class="field">
+    <label for="village">Village</label>
+    <input type="text" id="village" name="village" placeholder="e.g. Jalgaon Jamod" required>
+  </div>
+  <div class="field">
+    <label for="mobile">Mobile Number</label>
+    <input type="tel" id="mobile" name="mobile" placeholder="10-digit mobile number" pattern="[0-9]{10}" required>
+  </div>
+  <button type="submit" class="btn btn-primary">Save Farmer</button>
+  <a href="{{ url_for('farmers') }}" class="btn btn-outline">Cancel</a>
+</form>
+
+{% endblock %}

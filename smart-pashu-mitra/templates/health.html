@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+{% block title %}Health Assistant — Smart Pashu Mitra{% endblock %}
+{% block content %}
+
+<div class="page-header">
+  <div>
+    <div class="section-label">Advisory</div>
+    <h1>Health Assistant</h1>
+    <p>Select a symptom for basic guidance. This does not replace a veterinary visit.</p>
+  </div>
+</div>
+
+<form method="POST" class="form-card">
+  <div class="field">
+    <label for="animal_id">Animal (optional)</label>
+    <select id="animal_id" name="animal_id">
+      <option value="">Not specific to one animal</option>
+      {% for a in animals %}
+      <option value="{{ a.animal_id }}">{{ a.name }} — {{ a.farmer_name }}</option>
+      {% endfor %}
+    </select>
+  </div>
+  <div class="field">
+    <label for="symptom">Symptom</label>
+    <select id="symptom" name="symptom" required>
+      <option value="" disabled selected>Select a symptom</option>
+      {% for s in symptoms %}
+      <option value="{{ s }}">{{ s.title() }}</option>
+      {% endfor %}
+    </select>
+    <div class="field-hint">Rule-based guidance for the most commonly reported symptoms.</div>
+  </div>
+  <button type="submit" class="btn btn-primary">Get Advice</button>
+</form>
+
+{% if result %}
+<div class="advice-result">
+  <h3>Possible causes — {{ result.symptom }}</h3>
+  <ul>
+    {% for c in result.causes %}
+    <li>{{ c }}</li>
+    {% endfor %}
+  </ul>
+  <strong>Recommended action:</strong>
+  <p>{{ result.advice }}</p>
+</div>
+{% endif %}
+
+<div class="page-header">
+  <div>
+    <div class="section-label">Log</div>
+    <h2>Recent Queries</h2>
+  </div>
+</div>
+
+{% if history %}
+<div class="table-wrap">
+  <table class="ledger">
+    <thead><tr><th>Symptom</th><th>Advice</th><th>Logged At</th></tr></thead>
+    <tbody>
+      {% for q in history %}
+      <tr>
+        <td>{{ q.symptom }}</td>
+        <td>{{ q.advice }}</td>
+        <td>{{ q.created_at }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% else %}
+<div class="empty-state">No queries logged yet.</div>
+{% endif %}
+
+{% endblock %}

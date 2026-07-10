@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% block title %}Dashboard — Smart Pashu Mitra{% endblock %}
+{% block content %}
+
+<div class="page-header">
+  <div>
+    <div class="section-label">Overview</div>
+    <h1>Dashboard</h1>
+    <p>Live snapshot of registered farmers, animals, and vaccination status.</p>
+  </div>
+</div>
+
+<div class="stat-grid">
+  <div class="stat-card">
+    <div class="label">Total Farmers</div>
+    <div class="value">{{ total_farmers }}</div>
+  </div>
+  <div class="stat-card">
+    <div class="label">Total Animals</div>
+    <div class="value">{{ total_animals }}</div>
+  </div>
+  <div class="stat-card {{ 'alert' if vaccinations_due > 0 }}">
+    <div class="label">Vaccinations Due</div>
+    <div class="value">{{ vaccinations_due }}</div>
+  </div>
+  <div class="stat-card">
+    <div class="label">Schemes Listed</div>
+    <div class="value">{{ total_schemes }}</div>
+  </div>
+</div>
+
+<div class="page-header">
+  <div>
+    <div class="section-label">Recent Activity</div>
+    <h2>Latest Health Assistant Queries</h2>
+  </div>
+</div>
+
+{% if recent_queries %}
+<div class="table-wrap">
+  <table class="ledger">
+    <thead>
+      <tr><th>Symptom</th><th>Advice Given</th><th>Logged At</th></tr>
+    </thead>
+    <tbody>
+      {% for q in recent_queries %}
+      <tr>
+        <td>{{ q.symptom }}</td>
+        <td>{{ q.advice }}</td>
+        <td>{{ q.created_at }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% else %}
+<div class="empty-state">No health queries logged yet. Try the Health Assistant.</div>
+{% endif %}
+
+{% endblock %}

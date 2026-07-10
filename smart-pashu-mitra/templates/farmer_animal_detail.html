@@ -1,0 +1,103 @@
+{% extends "base.html" %}
+{% block title %}{{ animal.name }} — Farmer Portal{% endblock %}
+{% block content %}
+
+<div class="page-header">
+  <div>
+    <div class="section-label">Animal Details</div>
+    <h1>{{ animal.name }}</h1>
+    <p>Owned by <strong>{{ animal.farmer_name }}</strong> — {{ animal.village }}</p>
+  </div>
+  <a href="{{ url_for('farmer_portal') }}" class="btn btn-outline">← Back to Search</a>
+</div>
+
+<!-- Animal meta -->
+<div class="detail-meta-row">
+  <div class="meta-item">
+    <strong>Breed</strong>
+    {{ animal.breed }}
+  </div>
+  <div class="meta-item">
+    <strong>Age</strong>
+    {{ animal.age }} years
+  </div>
+  <div class="meta-item">
+    <strong>Weight</strong>
+    {{ animal.weight }} kg
+  </div>
+  <div class="meta-item">
+    <strong>Owner Mobile</strong>
+    {{ animal.mobile }}
+  </div>
+  <div class="meta-item">
+    <strong>Village</strong>
+    {{ animal.village }}
+  </div>
+</div>
+
+<!-- Vaccination Status -->
+<div class="section-label" style="margin-top:8px;">Health Record</div>
+<h2 style="margin-bottom:16px;">Vaccination Status</h2>
+
+{% if vacc_records %}
+<div class="table-wrap" style="margin-bottom:36px;">
+  <table class="ledger">
+    <thead>
+      <tr>
+        <th>Vaccine</th>
+        <th>Last Given</th>
+        <th>Next Due</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for v in vacc_records %}
+      {% set is_overdue = v.next_due_date <= today %}
+      <tr class="{{ 'overdue' if is_overdue }}">
+        <td>{{ v.vaccine_name }}</td>
+        <td>{{ v.last_date or '—' }}</td>
+        <td>{{ v.next_due_date }}</td>
+        <td>
+          {% if is_overdue %}
+            <span class="tag tag-overdue">⚠ Overdue</span>
+          {% else %}
+            <span class="tag tag-ok">✓ Upcoming</span>
+          {% endif %}
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+{% set overdue_count = vacc_records | selectattr('next_due_date', 'le', today) | list | length %}
+{% if overdue_count > 0 %}
+<div class="flash flash-error" style="margin-bottom:28px;">
+  ⚠ {{ overdue_count }} vaccination(s) are overdue. Please contact the veterinary office at Jalgaon Jamod.
+</div>
+{% else %}
+<div class="flash flash-success" style="margin-bottom:28px;">
+  ✓ All vaccinations are on schedule. Well done!
+</div>
+{% endif %}
+
+{% else %}
+<div class="empty-state" style="margin-bottom:36px;">
+  No vaccination records found for {{ animal.name }}.<br>
+  Please contact the veterinary office to register vaccination details.
+</div>
+{% endif %}
+
+<!-- Government Schemes -->
+<div class="section-label">Awareness</div>
+<h2 style="margin-bottom:16px;">Government Schemes</h2>
+<div class="scheme-list" style="margin-bottom:40px;">
+  {% for s in schemes %}
+  <div class="scheme-card">
+    <h3>{{ s.name }}</h3>
+    <p>{{ s.description }}</p>
+  </div>
+  {% endfor %}
+</div>
+
+{% endblock %}

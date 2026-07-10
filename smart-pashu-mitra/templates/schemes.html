@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block title %}Government Schemes — Smart Pashu Mitra{% endblock %}
+{% block content %}
+
+<div class="page-header">
+  <div>
+    <div class="section-label">Awareness</div>
+    <h1>Government Schemes</h1>
+    <p>Livestock and dairy schemes farmers may be eligible for.</p>
+  </div>
+</div>
+
+<div class="scheme-list">
+  {% for s in schemes %}
+  <div class="scheme-card">
+    <h3>{{ s.name }}</h3>
+    <p>{{ s.description }}</p>
+  </div>
+  {% endfor %}
+</div>
+
+{% endblock %}

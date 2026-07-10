@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block title %}Farmers — Smart Pashu Mitra{% endblock %}
+{% block content %}
+
+<div class="page-header">
+  <div>
+    <div class="section-label">Register</div>
+    <h1>Farmers</h1>
+    <p>{{ farmers|length }} farmer(s) registered.</p>
+  </div>
+  <a href="{{ url_for('add_farmer') }}" class="btn btn-accent">+ Register Farmer</a>
+</div>
+
+{% if farmers %}
+<div class="table-wrap">
+  <table class="ledger">
+    <thead>
+      <tr><th>ID</th><th>Name</th><th>Village</th><th>Mobile</th><th>Registered On</th><th></th></tr>
+    </thead>
+    <tbody>
+      {% for f in farmers %}
+      <tr>
+        <td>#{{ f.farmer_id }}</td>
+        <td>{{ f.name }}</td>
+        <td>{{ f.village }}</td>
+        <td>{{ f.mobile }}</td>
+        <td>{{ f.created_at }}</td>
+        <td>
+          <form method="POST" action="{{ url_for('delete_farmer', farmer_id=f.farmer_id) }}"
+                onsubmit="return confirm('Remove this farmer and all linked records?');">
+            <button type="submit" class="btn btn-danger">Delete</button>
+          </form>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% else %}
+<div class="empty-state">No farmers registered yet. Start by registering the first one.</div>
+{% endif %}
+
+{% endblock %}

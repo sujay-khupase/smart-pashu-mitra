@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block title %}Add Vaccination — Smart Pashu Mitra{% endblock %}
+{% block content %}
+
+<div class="page-header">
+  <div>
+    <div class="section-label">Track</div>
+    <h1>Add Vaccination Record</h1>
+    <p>Log a vaccination and its next due date.</p>
+  </div>
+</div>
+
+<form method="POST" class="form-card">
+  <div class="field">
+    <label for="animal_id">Animal</label>
+    <select id="animal_id" name="animal_id" required>
+      <option value="" disabled selected>Select animal</option>
+      {% for a in animals %}
+      <option value="{{ a.animal_id }}">{{ a.name }} — {{ a.farmer_name }}</option>
+      {% endfor %}
+    </select>
+  </div>
+  <div class="field">
+    <label for="vaccine_name">Vaccine Name</label>
+    <input type="text" id="vaccine_name" name="vaccine_name" placeholder="e.g. FMD, HS, BQ" required>
+  </div>
+  <div class="field">
+    <label for="last_date">Last Given (optional)</label>
+    <input type="date" id="last_date" name="last_date">
+  </div>
+  <div class="field">
+    <label for="next_due_date">Next Due Date</label>
+    <input type="date" id="next_due_date" name="next_due_date" required>
+  </div>
+  <button type="submit" class="btn btn-primary">Save Record</button>
+  <a href="{{ url_for('vaccinations') }}" class="btn btn-outline">Cancel</a>
+</form>
+
+{% endblock %}

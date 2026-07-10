@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+{% block title %}Farmer Portal — Smart Pashu Mitra{% endblock %}
+{% block content %}
+
+<div class="page-header">
+  <div>
+    <div class="section-label">Self-Service</div>
+    <h1>Farmer Portal</h1>
+    <p>Search your animal, check vaccination status, and browse government schemes — no login needed.</p>
+  </div>
+</div>
+
+<div class="portal-two-col">
+
+  <!-- Left: Search + Results -->
+  <div>
+    <div class="section-label">Find Your Animal</div>
+    <h2 style="margin-bottom:16px;">Search Animal</h2>
+
+    <form method="POST" action="{{ url_for('farmer_portal') }}">
+      <div class="search-form">
+        <div class="field">
+          <label for="search">Animal name, breed, or farmer name</label>
+          <input
+            type="text"
+            id="search"
+            name="search"
+            placeholder="e.g. Gauri, Gir, Ramesh Patil"
+            value="{{ search_query }}"
+            autocomplete="off"
+          >
+        </div>
+        <button type="submit" class="btn btn-primary">Search</button>
+        {% if search_query %}
+        <a href="{{ url_for('farmer_portal') }}" class="btn btn-outline">Clear</a>
+        {% endif %}
+      </div>
+    </form>
+
+    {% if search_query and results %}
+    <p style="font-size:0.88rem; color:var(--color-ink-soft); margin-bottom:14px;">
+      {{ results|length }} result(s) for "<strong>{{ search_query }}</strong>"
+    </p>
+    {% for a in results %}
+    <div class="animal-result-card">
+      <div class="animal-info">
+        <strong>{{ a.name }}</strong>
+        <div class="animal-meta">
+          {{ a.breed }} · {{ a.age }} yrs · {{ a.weight }} kg<br>
+          Owner: <strong>{{ a.farmer_name }}</strong> — {{ a.village }}
+        </div>
+      </div>
+      <a href="{{ url_for('farmer_animal_detail', animal_id=a.animal_id) }}" class="btn btn-accent btn-sm">
+        View Details
+      </a>
+    </div>
+    {% endfor %}
+
+    {% elif search_query and not results %}
+    <div class="empty-state">
+      No animals found for "<strong>{{ search_query }}</strong>".<br>
+      Try searching by a different name, breed, or farmer name.
+    </div>
+
+    {% else %}
+    <div class="empty-state" style="padding:32px 20px;">
+      Enter an animal name, breed, or farmer name above to search.
+    </div>
+    {% endif %}
+  </div>
+
+  <!-- Right: Government Schemes -->
+  <div>
+    <div class="section-label">Awareness</div>
+    <h2 style="margin-bottom:16px;">Government Schemes</h2>
+    <div class="scheme-list">
+      {% for s in schemes %}
+      <div class="scheme-card">
+        <h3>{{ s.name }}</h3>
+        <p>{{ s.description }}</p>
+      </div>
+      {% endfor %}
+    </div>
+
+    <p style="margin-top:18px; font-size:0.82rem; color:var(--color-ink-soft);">
+      Contact the veterinary office for eligibility and application details.
+    </p>
+  </div>
+
+</div>
+
+{% endblock %}

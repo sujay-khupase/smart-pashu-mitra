@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{% block title %}Smart Pashu Mitra{% endblock %}</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@400;600;700&family=Mukta:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="nav-inner">
+    <a class="brand" href="{{ url_for('index') }}">
+      <span class="brand-mark">Smart Pashu Mitra</span>
+      <span class="brand-tagline">Animal Husbandry Dept. · Jalgaon Jamod</span>
+    </a>
+    <nav class="nav-links">
+      <a href="{{ url_for('index') }}" class="{{ 'active' if request.endpoint == 'index' }}">Home</a>
+      {% if session.get('logged_in') %}
+      <a href="{{ url_for('dashboard') }}" class="{{ 'active' if request.endpoint == 'dashboard' }}">Dashboard</a>
+      <a href="{{ url_for('farmers') }}" class="{{ 'active' if request.endpoint in ['farmers','add_farmer'] }}">Farmers</a>
+      <a href="{{ url_for('animals') }}" class="{{ 'active' if request.endpoint in ['animals','add_animal'] }}">Animals</a>
+      <a href="{{ url_for('vaccinations') }}" class="{{ 'active' if request.endpoint in ['vaccinations','add_vaccination'] }}">Vaccinations</a>
+      <a href="{{ url_for('health') }}" class="{{ 'active' if request.endpoint == 'health' }}">Health Assistant</a>
+      {% endif %}
+      <a href="{{ url_for('schemes') }}" class="{{ 'active' if request.endpoint == 'schemes' }}">Schemes</a>
+      <a href="{{ url_for('farmer_portal') }}" class="{{ 'active' if request.endpoint in ['farmer_portal','farmer_animal_detail'] }}">Farmer Portal</a>
+      {% if session.get('logged_in') %}
+      <a href="{{ url_for('logout') }}" class="nav-logout">Logout</a>
+      {% else %}
+      <a href="{{ url_for('login') }}" class="{{ 'active' if request.endpoint == 'login' }}">Officer Login</a>
+      {% endif %}
+    </nav>
+  </div>
+</header>
+
+<div class="page-wrap">
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      {% for category, message in messages %}
+        <div class="flash flash-{{ category }}">{{ message }}</div>
+      {% endfor %}
+    {% endif %}
+  {% endwith %}
+
+  {% block content %}{% endblock %}
+</div>
+
+<footer class="site-footer">
+  Smart Pashu Mitra — Digital Livestock Assistant for Rural Farmers · DYPIU Rural Internship Programme
+</footer>
+
+</body>
+</html>

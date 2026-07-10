@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block title %}Vaccinations — Smart Pashu Mitra{% endblock %}
+{% block content %}
+
+<div class="page-header">
+  <div>
+    <div class="section-label">Track</div>
+    <h1>Vaccinations</h1>
+    <p>{{ vaccinations|length }} record(s), sorted by due date. Overdue rows are marked.</p>
+  </div>
+  <a href="{{ url_for('add_vaccination') }}" class="btn btn-accent">+ Add Vaccination Record</a>
+</div>
+
+{% if vaccinations %}
+<div class="table-wrap">
+  <table class="ledger">
+    <thead>
+      <tr><th>Animal</th><th>Owner</th><th>Vaccine</th><th>Last Given</th><th>Next Due</th><th>Status</th><th></th></tr>
+    </thead>
+    <tbody>
+      {% for v in vaccinations %}
+      <tr class="{{ 'overdue' if v.next_due_date <= today }}">
+        <td>{{ v.animal_name }}</td>
+        <td>{{ v.farmer_name }}</td>
+        <td>{{ v.vaccine_name }}</td>
+        <td>{{ v.last_date or '—' }}</td>
+        <td>{{ v.next_due_date }}</td>
+        <td>
+          {% if v.next_due_date <= today %}
+            <span class="tag tag-overdue">Overdue</span>
+          {% else %}
+            <span class="tag tag-ok">Upcoming</span>
+          {% endif %}
+        </td>
+        <td>
+          <form method="POST" action="{{ url_for('delete_vaccination', vaccination_id=v.vaccination_id) }}"
+                onsubmit="return confirm('Remove this vaccination record?');">
+            <button type="submit" class="btn btn-danger">Delete</button>
+          </form>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% else %}
+<div class="empty-state">No vaccination records yet.</div>
+{% endif %}
+
+{% endblock %}

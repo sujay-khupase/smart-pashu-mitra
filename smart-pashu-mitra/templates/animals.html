@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block title %}Animals — Smart Pashu Mitra{% endblock %}
+{% block content %}
+
+<div class="page-header">
+  <div>
+    <div class="section-label">Register</div>
+    <h1>Animals</h1>
+    <p>{{ animals|length }} animal(s) registered.</p>
+  </div>
+  <a href="{{ url_for('add_animal') }}" class="btn btn-accent">+ Register Animal</a>
+</div>
+
+{% if animals %}
+<div class="table-wrap">
+  <table class="ledger">
+    <thead>
+      <tr><th>ID</th><th>Name</th><th>Breed</th><th>Age</th><th>Weight</th><th>Owner</th><th></th></tr>
+    </thead>
+    <tbody>
+      {% for a in animals %}
+      <tr>
+        <td>#{{ a.animal_id }}</td>
+        <td>{{ a.name }}</td>
+        <td>{{ a.breed }}</td>
+        <td>{{ a.age }} yrs</td>
+        <td>{{ a.weight }} kg</td>
+        <td>{{ a.farmer_name }}</td>
+        <td>
+          <form method="POST" action="{{ url_for('delete_animal', animal_id=a.animal_id) }}"
+                onsubmit="return confirm('Remove this animal and its vaccination records?');">
+            <button type="submit" class="btn btn-danger">Delete</button>
+          </form>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% else %}
+<div class="empty-state">No animals registered yet.</div>
+{% endif %}
+
+{% endblock %}
